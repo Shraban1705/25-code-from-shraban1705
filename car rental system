@@ -1,0 +1,73 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+class Car {
+public:
+    string model;
+    bool isRented;
+
+    Car(string m) : model(m), isRented(false) {}
+};
+
+class CarRentalSystem {
+private:
+    vector<Car> cars;
+
+public:
+    void addCar(const string& model) {
+        cars.push_back(Car(model));
+        cout << "Car added: " << model << endl;
+    }
+
+    void rentCar(const string& model) {
+        for (auto& car : cars) {
+            if (car.model == model && !car.isRented) {
+                car.isRented = true;
+                cout << "Car rented: " << model << endl;
+                return;
+            }
+        }
+        cout << "Car not available for rent: " << model << endl;
+    }
+
+    void returnCar(const string& model) {
+        for (auto& car : cars) {
+            if (car.model == model && car.isRented) {
+                car.isRented = false;
+                cout << "Car returned: " << model << endl;
+                return;
+            }
+        }
+        cout << "This car was not rented: " << model << endl;
+    }
+
+    void displayCars() {
+        cout << "Available cars:" << endl;
+        for (const auto& car : cars) {
+            cout << car.model << (car.isRented ? " (Rented)" : " (Available)") << endl;
+        }
+    }
+};
+
+int main() {
+    CarRentalSystem system;
+
+    system.addCar("Toyota Camry");
+    system.addCar("Honda Civic");
+    system.addCar("Ford Focus");
+
+    system.displayCars();
+
+    system.rentCar("Honda Civic");
+    system.rentCar("Toyota Camry");
+
+    system.displayCars();
+
+    system.returnCar("Honda Civic");
+    system.displayCars();
+
+    return 0;
+}
